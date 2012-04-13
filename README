@@ -1,4 +1,8 @@
 
+The program pings all the configured hosts, and lists their status.
+If a program responds to the ping request, it's "Up" and green.
+Otherwise, it's "Down" and marked in red.
+
 Usage:
 
 1. Configure the VPN networks that you want to check. At the moment I use N2N and hamachi (logmein)
