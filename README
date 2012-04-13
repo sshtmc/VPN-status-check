@@ -1,0 +1,16 @@
+
+Usage:
+
+1. Configure the VPN networks that you want to check. At the moment I use N2N and hamachi (logmein)
+2. Run the program:
+
+$ vpn
+# N2N nodes
+192.168.2.34 dell7 # Up 
+192.168.2.32  opsbm01 # Up 
+192.168.2.33 sshtmc-laptop # Up 
+# Hamachi nodes
+5.124.120.170 dell02  # Up 
+5.113.217.242  opsbm01 # Up 
+5.42.83.186 dell7 # Up 
+

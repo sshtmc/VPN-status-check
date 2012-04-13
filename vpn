@@ -2,16 +2,13 @@
 
 nodes_n2n = {
 "192.168.2.32": "opsbm01",
-"192.168.2.33": "stomic-laptop",
+"192.168.2.33": "sshtmc-laptop",
 "192.168.2.34": "dell7",
 }
 nodes_hamachi = {
 "5.42.83.186": "dell7",
 "5.113.217.242": "opsbm01",
 "5.124.120.170": "dell02",
-"5.174.244.156": "stomic-t60",
-"5.153.206.65": "jasmina-ubuntu",
-"5.166.229.181": "stevo.tomic",
 }
 
 import subprocess
