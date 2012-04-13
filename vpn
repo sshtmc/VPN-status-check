@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+
+nodes_n2n = {
+"192.168.2.32": "opsbm01",
+"192.168.2.33": "stomic-laptop",
+"192.168.2.34": "dell7",
+}
+nodes_hamachi = {
+"5.42.83.186": "dell7",
+"5.113.217.242": "opsbm01",
+"5.124.120.170": "dell02",
+"5.174.244.156": "stomic-t60",
+"5.153.206.65": "jasmina-ubuntu",
+"5.166.229.181": "stevo.tomic",
+}
+
+import subprocess
+from sys import stdout
+
+if stdout.isatty():
+  HEADER = '\033[95m'
+  OKBLUE = '\033[94m'
+  OKGREEN = '\033[92m'
+  WARNING = '\033[93m'
+  FAIL = '\033[91m'
+  ENDC = '\033[0m'
+else:
+  HEADER = ''
+  OKBLUE = ''
+  OKGREEN = ''
+  WARNING = ''
+  FAIL = ''
+  ENDC = ''
+
+def execCmd(command, sudo=False, cwd=None, infile=None, outfile=None,
+            data=None, raw=False, env=None):
+    """
+    Executes an external command, optionally via sudo.
+    """
+    if sudo:
+        if isinstance(command, types.StringTypes):
+            command = " ".join([constants.EXT_SUDO, SUDO_NON_INTERACTIVE_FLAG, command])
+        else:
+            command = [constants.EXT_SUDO, SUDO_NON_INTERACTIVE_FLAG] + command
+
+    if infile == None:
+        infile = subprocess.PIPE
+
+    if outfile == None:
+        outfile = subprocess.PIPE
+
+    p = subprocess.Popen(command, close_fds=True, cwd=cwd,
+		       stdin=infile, stdout=outfile, stderr=subprocess.PIPE,
+		       env=env)
+
+    (out, err) = p.communicate(data)
+
+    if out == None:
+        # Prevent splitlines() from barfing later on
+        out = ""
+
+    if not raw:
+        out = out.splitlines(False)
+        err = err.splitlines(False)
+
+    return (p.returncode, out, err)
+
+def nodestatus(nds):
+  up = []
+  down = []
+  for k,v in nds.iteritems():
+     ret, out, err = execCmd(["ping", "-c1", "-w1", k])
+     if ret == 0:
+       up.append((k,v))
+     else:
+       down.append((k,v,))
+  for k,v in up:
+    print OKGREEN, "%s\t%s\t# Up" % (k, v), ENDC
+  for k,v in down:
+    print FAIL, "%s\t%s\t# Down" % (k, v), ENDC
+
+if __name__ == "__main__":
+    print "# N2N nodes"
+    nodestatus(nodes_n2n)
+    print "# Hamachi nodes"
+    nodestatus(nodes_hamachi)
+
